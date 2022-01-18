@@ -17,7 +17,7 @@ const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)
 // console.log(getRandomNumber(1, 10));
 
 const play = () => {
-  //* Variabili
+  //***************** Variabili
   const selectDifficulty = document.getElementById('difficulty').value; 
   let points = 0;
   const totalBombs = 16
@@ -39,12 +39,36 @@ const play = () => {
       totalCells = 49;
       break;
     default:
-      difficulty = 3;
-      totalCells = 49;
+      difficulty = 2;
+      totalCells = 81;
   }
+  
+  console.log(totalCells);
+  // Si calcola il punteggio da raggiungere per vincere
+  const maxAttempts = totalCells - totalBombs;
 
-
+  //*************** FUNZIONI
+  // Funzione crea array delle bombe
+  const generateBombs = (numberOfBombs, numberOfCells) => {
+    const bombArray = [];
+    // todo Forse darà problemi in futuro il '<=' con il conteggio massimo
+    while (bombArray.length <= numberOfBombs) {
+      const randomNumber = getRandomNumber(1, numberOfCells);
+      if (!bombArray.includes(randomNumber)) bombArray.push(randomNumber);
+    }
+    return bombArray;
+  }
+  // Funzione crea una cella
+  const createCell = (selectedDifficulty, actualNumber) => {
+		const cell = document.createElement('div');
+		cell.className = `cell-${selectedDifficulty} fw-bold d-flex justify-content-center align-items-center`;
+		cell.id = actualNumber;
+		cell.innerText = actualNumber;
+		return cell;
 }
+}
+
+console.log(play());
 // ---------------------
 // Dati
 // ---------------------
