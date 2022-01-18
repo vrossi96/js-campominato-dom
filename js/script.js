@@ -46,6 +46,7 @@ const play = () => {
   console.log(totalCells);
   // Si calcola il punteggio da raggiungere per vincere
   const maxAttempts = totalCells - totalBombs;
+  console.log(maxAttempts);
 
   //*************** FUNZIONI
   // Funzione crea array delle bombe
@@ -65,15 +66,35 @@ const play = () => {
 		cell.innerText = actualNumber;
 		return cell;
   };
+  //******* */ Fine partita
+  const gameOver = (bombs, userPoints, hasLost) => {
+    const cells = document.querySelectorAll("[class*='cell-']");
+  }
   //* Sul click
-  const onCellCLick = (clickedCell, bombs) => {
-    console.log(clickedCell.innerText);
+  const onCellClick = (clickedCell, bombs) => {
+    //! NON RIMUOVE LEVENT LISTENER
+    clickedCell.removeEventListener('click', onCellClick);
+    const number = parseInt(clickedCell.innerText);
+    console.log(number);
+    if(bombs.includes(number)) {
+      console.log('bomba');
+      //! PERSO
+    }else {
+      clickedCell.classList.add('safe');
+      userPoints++;
+      console.log(userPoints);
+      if(userPoints === maxAttempts){
+        //! VITTORIA
+        console.log('VITTORIA');
+      }
+    }
   };
 
   //* Assegno la classe wrong per le celle con le bombe
   const showBombs = (bombs) => {
     // Prendo tutte le celle per la loro classe
-    const cells = document.querySelectorAll('[class*="cell-"]');
+    const cells = document.querySelectorAll("[class*='cell-']");
+    console.log(cells.innerText);
     for (let i = 0; i < cells.length; i++) {
       // Prendo ogni singola cella
       const cell = cells[i];
@@ -91,7 +112,7 @@ const play = () => {
     for (let i = 1; i <= numberOfCells; i++) {
       const cell = createCell(selectedDifficulty, i);
 
-      cell.addEventListener('click', (e) => onCellCLick(e.target, bombs));
+      cell.addEventListener('click', (e) => onCellClick(e.target, bombs));
 
       grid.appendChild(cell);
     }
