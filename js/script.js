@@ -19,7 +19,7 @@ const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)
 const play = () => {
   //***************** Variabili
   const selectDifficulty = document.getElementById('difficulty').value; 
-  let points = 0;
+  let userPoints = 0;
   const totalBombs = 16
   // Prendo la griglia e la pulisco
   const grid = document.getElementById('grid');
@@ -41,7 +41,7 @@ const play = () => {
     default:
       difficulty = 2;
       totalCells = 81;
-  }
+  };
   
   console.log(totalCells);
   // Si calcola il punteggio da raggiungere per vincere
@@ -51,13 +51,12 @@ const play = () => {
   // Funzione crea array delle bombe
   const generateBombs = (numberOfBombs, numberOfCells) => {
     const bombArray = [];
-    // todo Forse darà problemi in futuro il '<=' con il conteggio massimo
-    while (bombArray.length <= numberOfBombs) {
+    while (bombArray.length < numberOfBombs) {
       const randomNumber = getRandomNumber(1, numberOfCells);
       if (!bombArray.includes(randomNumber)) bombArray.push(randomNumber);
     }
     return bombArray;
-  }
+  };
   // Funzione crea una cella
   const createCell = (selectedDifficulty, actualNumber) => {
 		const cell = document.createElement('div');
@@ -65,16 +64,51 @@ const play = () => {
 		cell.id = actualNumber;
 		cell.innerText = actualNumber;
 		return cell;
-}
-}
+  };
+  //* Sul click
+  const onCellCLick = (clickedCell, bombs) => {
+    console.log(clickedCell.innerText);
+  };
 
-console.log(play());
+  //* Assegno la classe wrong per le celle con le bombe
+  const showBombs = (bombs) => {
+    // Prendo tutte le celle per la loro classe
+    const cells = document.querySelectorAll('[class*="cell-"]');
+    for (let i = 0; i < cells.length; i++) {
+      // Prendo ogni singola cella
+      const cell = cells[i];
+      // Prendo il valore all'interno della cella e la metto come intero
+      const cellNumber = parseInt(cell.innerText);
+      // Se l'array delle bombe ha incluso il numero della cella allora viene messa la classe worng
+      if (bombs.includes(cellNumber)) cell.classList.add('wrong');
+    }
+  };
+  
+  
+
+  // Genero la griglia
+  const generateGrid = (numberOfCells, selectedDifficulty, bombs) => {
+    for (let i = 1; i <= numberOfCells; i++) {
+      const cell = createCell(selectedDifficulty, i);
+
+      cell.addEventListener('click', (e) => onCellCLick(e.target, bombs));
+
+      grid.appendChild(cell);
+    }
+  };
+
+  // Creo l'array di bombe che servono alla funzione per genereare la griglia
+  const bombs = generateBombs(totalBombs, totalCells);
+  generateGrid(totalCells, difficulty, bombs);
+};
+
 // ---------------------
 // Dati
 // ---------------------
 const refresh = document.getElementById('refresh');
 const clear = document.getElementById('clear');
 
+refresh.addEventListener('click', play);
 
 
 

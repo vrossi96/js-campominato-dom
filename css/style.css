@@ -54,3 +54,6 @@ main {
 .colored {
   background-color: cyan;
 }
+.wrong {
+  background-color: red;
+}
