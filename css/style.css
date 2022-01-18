@@ -1,0 +1,56 @@
+/* Utilities */
+.disabled {
+  visibility: hidden;
+}
+
+/* Header */
+header,
+button,
+select {
+  background-color: #d9997e;
+}
+header h1 {
+  height: 80px;
+  line-height: 80px;
+}
+
+button,
+select {
+  background-color: #d9ae7e;
+  border: 1px solid #f8d190;
+  border-radius: 15px;
+}
+/* Main */
+main {
+  height: calc(100vh - 88px);
+  background-color: #f0bb96;
+}
+
+#grid {
+  height: 500px;
+  width: 500px;
+}
+
+.cell-1,
+.cell-2,
+.cell-3 {
+  background-color: #d9ae7e;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+#grid .cell-1 {
+  width: calc(100% / 10);
+  height: calc(100% / 10);
+}
+#grid .cell-2 {
+  width: calc(100% / 9);
+  height: calc(100% / 9);
+}
+#grid .cell-3 {
+  width: calc(100% / 7);
+  height: calc(100% / 7);
+}
+.colored {
+  background-color: cyan;
+}
