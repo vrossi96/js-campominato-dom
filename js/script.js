@@ -66,26 +66,63 @@ const play = () => {
 		cell.innerText = actualNumber;
 		return cell;
   };
+
+  // Genero la griglia
+  const generateGrid = (numberOfCells, selectedDifficulty, bombs) => {
+    for (let i = 1; i <= numberOfCells; i++) {
+      const cell = createCell(selectedDifficulty, i);
+      cell.addEventListener('click', (e) => onCellClick(e.target, bombs));
+      grid.appendChild(cell);
+    }
+  };
+  
   //******* */ Fine partita
   const gameOver = (bombs, userPoints, hasLost) => {
     const cells = document.querySelectorAll("[class*='cell-']");
+    
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].removeEventListener('click', onCellClick);
+    }
+    showBombs(bombs);
+
+    const messageElement = document.createElement('h2');
+    messageElement.className = 'message';
+
+    const messageText = hasLost ? `Hai perso, punteggio ${userPoints}` : `Hai vinto!`;
+    messageElement.innerText = messageText;
+
+
+    grid.appendChild(messageElement);
   }
+  /*
+  const disableCell = (cell) => {
+    const clone = cell.cloneNode();
+    clone.innerText = cell.innerText;
+    clone.classList.add('disabled');
+    cell.parentNode.replaceChild(clone, cell);
+    return clone;
+  }
+  */
   //* Sul click
-  const onCellClick = (clickedCell, bombs) => {
-    //! NON RIMUOVE LEVENT LISTENER
+  function onCellClick(clickedCell, bombs) {
     clickedCell.removeEventListener('click', onCellClick);
     const number = parseInt(clickedCell.innerText);
     console.log(number);
     if(bombs.includes(number)) {
-      console.log('bomba');
+      clickedCell.classList.add('wrong');
       //! PERSO
+      console.log('bomba');
+      gameOver(bombs, userPoints, true);
     }else {
-      clickedCell.classList.add('safe');
+      clickedCell.classList.add('colored');
+      clickedCell.classList.add('disabled');
+      // disableCell(clickedCell);
       userPoints++;
       console.log(userPoints);
       if(userPoints === maxAttempts){
-        //! VITTORIA
         console.log('VITTORIA');
+        //! VITTORIA
+        gameOver(bombs, userPoints, false);
       }
     }
   };
@@ -94,7 +131,7 @@ const play = () => {
   const showBombs = (bombs) => {
     // Prendo tutte le celle per la loro classe
     const cells = document.querySelectorAll("[class*='cell-']");
-    console.log(cells.innerText);
+    // console.log(cells.innerText);
     for (let i = 0; i < cells.length; i++) {
       // Prendo ogni singola cella
       const cell = cells[i];
@@ -106,18 +143,6 @@ const play = () => {
   };
   
   
-
-  // Genero la griglia
-  const generateGrid = (numberOfCells, selectedDifficulty, bombs) => {
-    for (let i = 1; i <= numberOfCells; i++) {
-      const cell = createCell(selectedDifficulty, i);
-
-      cell.addEventListener('click', (e) => onCellClick(e.target, bombs));
-
-      grid.appendChild(cell);
-    }
-  };
-
   // Creo l'array di bombe che servono alla funzione per genereare la griglia
   const bombs = generateBombs(totalBombs, totalCells);
   generateGrid(totalCells, difficulty, bombs);
@@ -130,6 +155,8 @@ const refresh = document.getElementById('refresh');
 const clear = document.getElementById('clear');
 
 refresh.addEventListener('click', play);
+
+
 
 
 
