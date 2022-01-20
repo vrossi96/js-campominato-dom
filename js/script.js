@@ -49,6 +49,7 @@ const play = () => {
   console.log(maxAttempts);
 
   //*************** FUNZIONI
+  //**************************Funziona*********************************** */
   // Funzione crea array delle bombe
   const generateBombs = (numberOfBombs, numberOfCells) => {
     const bombArray = [];
@@ -58,6 +59,8 @@ const play = () => {
     }
     return bombArray;
   };
+  //**************************Funziona*********************************** */
+  //**************************Funziona*********************************** */
   // Funzione crea una cella
   const createCell = (selectedDifficulty, actualNumber) => {
 		const cell = document.createElement('div');
@@ -66,16 +69,17 @@ const play = () => {
 		cell.innerText = actualNumber;
 		return cell;
   };
-
+  //**************************Funziona*********************************** */
+  //**************************Funziona*********************************** */
   // Genero la griglia
   const generateGrid = (numberOfCells, selectedDifficulty, bombs) => {
     for (let i = 1; i <= numberOfCells; i++) {
       const cell = createCell(selectedDifficulty, i);
-      cell.addEventListener('click', (e) => onCellClick(e.target, bombs));
+      cell.addEventListener('click', onCellClick);
       grid.appendChild(cell);
     }
   };
-  
+  //**************************Funziona*********************************** */
   //******* */ Fine partita
   const gameOver = (bombs, userPoints, hasLost) => {
     const cells = document.querySelectorAll("[class*='cell-']");
@@ -94,17 +98,12 @@ const play = () => {
 
     grid.appendChild(messageElement);
   }
-  /*
-  const disableCell = (cell) => {
-    const clone = cell.cloneNode();
-    clone.innerText = cell.innerText;
-    clone.classList.add('disabled');
-    cell.parentNode.replaceChild(clone, cell);
-    return clone;
-  }
-  */
+
+  //# BOMBS SPOSTATA PERCHE' E' USATA IN ONCELLCLICK
+  const bombs = generateBombs(totalBombs, totalCells);
   //* Sul click
-  function onCellClick(clickedCell, bombs) {
+  function onCellClick(event) {
+    const clickedCell = event.target;
     clickedCell.removeEventListener('click', onCellClick);
     const number = parseInt(clickedCell.innerText);
     console.log(number);
@@ -127,6 +126,7 @@ const play = () => {
     }
   };
 
+  //**************************Funziona*********************************** */
   //* Assegno la classe wrong per le celle con le bombe
   const showBombs = (bombs) => {
     // Prendo tutte le celle per la loro classe
@@ -141,10 +141,9 @@ const play = () => {
       if (bombs.includes(cellNumber)) cell.classList.add('wrong');
     }
   };
-  
+  //**************************Funziona*********************************** */
   
   // Creo l'array di bombe che servono alla funzione per genereare la griglia
-  const bombs = generateBombs(totalBombs, totalCells);
   generateGrid(totalCells, difficulty, bombs);
 };
 
